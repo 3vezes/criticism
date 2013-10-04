@@ -20,6 +20,6 @@ local.properties
 .project
 
 # Intellij 
-.iml
+*.iml
 .idea/
 build/
