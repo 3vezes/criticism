@@ -4,8 +4,15 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainActivity extends Activity {
 
@@ -23,11 +30,28 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    private Bitmap getBitmapFromView(View view){
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Bitmap.Config.ARGB_8888);
+    private Bitmap getBitmapFromView(Activity activity){
+        DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels,displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
+        activity.getWindow().getDecorView().draw(canvas);
         return bitmap;
+    }
+
+    public void snap(View view){
+        Bitmap screenshot = getBitmapFromView(this);
+        try {
+            File destination = new File(getExternalFilesDir(null),"example.png");
+            Log.d("Snapshot",destination.getAbsolutePath());
+            FileOutputStream fileOutputStream = new FileOutputStream(destination);
+            screenshot.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
