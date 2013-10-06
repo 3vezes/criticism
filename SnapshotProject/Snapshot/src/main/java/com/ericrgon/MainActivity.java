@@ -1,6 +1,7 @@
 package com.ericrgon;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity {
         Bitmap screenshot = getBitmapFromView(this);
         try {
             File destination = new File(getExternalFilesDir(null),"example.png");
-            Log.d("Snapshot",destination.getAbsolutePath());
+            Log.d("Snapshot", destination.getAbsolutePath());
             FileOutputStream fileOutputStream = new FileOutputStream(destination);
             screenshot.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
             fileOutputStream.close();
@@ -52,6 +53,8 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
+        Intent feedbackIntent = new Intent(this,FeedbackActivity.class);
+        startActivity(feedbackIntent);
     }
 
 }
