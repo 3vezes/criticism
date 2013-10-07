@@ -18,6 +18,7 @@
             android:text="@string/preview"/>
         <View style="@style/Divider.Vertical"/>
         <Button
+            android:id="@+id/send"
             style="@style/Button.Borderless"
             android:text="@string/send"/>
 
@@ -74,6 +75,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"/>
             </RelativeLayout>
+            <ImageView
+                android:id="@+id/screenshot"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
         </LinearLayout>
     </ScrollView>
 

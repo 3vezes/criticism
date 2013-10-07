@@ -6,14 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends Activity {
 
@@ -31,30 +27,24 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    public void snap(View view){
+        Intent feedbackIntent = new Intent(this,FeedbackActivity.class);
+        feedbackIntent.putExtra("bitmap",compressBitmap(getBitmapFromView(this)));
+        startActivity(feedbackIntent);
+    }
+
+    private byte[] compressBitmap(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
     private Bitmap getBitmapFromView(Activity activity){
         DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
         Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels,displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         activity.getWindow().getDecorView().draw(canvas);
         return bitmap;
-    }
-
-    public void snap(View view){
-        Bitmap screenshot = getBitmapFromView(this);
-        try {
-            File destination = new File(getExternalFilesDir(null),"example.png");
-            Log.d("Snapshot", destination.getAbsolutePath());
-            FileOutputStream fileOutputStream = new FileOutputStream(destination);
-            screenshot.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Intent feedbackIntent = new Intent(this,FeedbackActivity.class);
-        startActivity(feedbackIntent);
     }
 
 }
