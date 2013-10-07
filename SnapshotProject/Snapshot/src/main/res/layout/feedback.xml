@@ -10,6 +10,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <Button
+            android:id="@+id/cancel"
             style="@style/Button.Borderless"
             android:text="@string/cancel"/>
         <View style="@style/Divider.Vertical"/>

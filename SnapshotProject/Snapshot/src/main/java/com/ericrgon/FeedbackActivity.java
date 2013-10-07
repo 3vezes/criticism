@@ -15,6 +15,7 @@ public class FeedbackActivity extends Activity {
     private final String BUCKET_NAME = "Feedback";
 
     private Button send;
+    private Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,14 @@ public class FeedbackActivity extends Activity {
             public void onClick(View view) {
                 S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,BUCKET_NAME,bytes);
                 s3Uploader.upload();
+            }
+        });
+
+        cancel = (Button) findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
