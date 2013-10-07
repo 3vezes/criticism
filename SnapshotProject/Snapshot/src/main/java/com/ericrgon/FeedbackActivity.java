@@ -35,7 +35,7 @@ public class FeedbackActivity extends Activity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                S3Uploader s3Uploader = new S3Uploader(BUCKET_NAME,bytes);
+                S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,BUCKET_NAME,bytes);
                 s3Uploader.upload();
             }
         });
