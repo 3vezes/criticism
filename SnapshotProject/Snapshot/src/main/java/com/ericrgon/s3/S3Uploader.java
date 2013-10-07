@@ -48,8 +48,6 @@ public class S3Uploader {
     }
 
     private String getPath(){
-        StringBuilder stringBuilder = new StringBuilder(bucketName);
-        stringBuilder.append("/").append(reportName);
-        return stringBuilder.toString();
+        return bucketName + "/" + reportName;
     }
 }

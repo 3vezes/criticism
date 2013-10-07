@@ -10,5 +10,7 @@
     <string name="description">Description</string>
     <string name="include_screenshot">Include screenshot</string>
     <string name="send_screen_of_last_page">Send screenshot of the last page you were on.</string>
+    <string name="include_system_data">Include system data</string>
+    <string name="share_data_message">Share system data to better diagnose the problem.</string>
 
 </resources>
