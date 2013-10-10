@@ -1,0 +1,81 @@
+--------- beginning of /dev/log/main
+D/dalvikvm(21485): Late-enabling CheckJNI
+D/libEGL  (21485): loaded /system/lib/egl/libEGL_adreno200.so
+D/libEGL  (21485): loaded /system/lib/egl/libGLESv1_CM_adreno200.so
+D/libEGL  (21485): loaded /system/lib/egl/libGLESv2_adreno200.so
+I/Adreno200-EGL(21485): <qeglDrvAPI_eglInitialize:265>: EGL 1.4 QUALCOMM Build: Iabe52cfaeae4c5fab1acacfe6f056ba15fa93274
+D/OpenGLRenderer(21485): Enabling debug mode 0
+D/dalvikvm(21485): GC_FOR_ALLOC freed 48K, 1% free 9012K/9096K, paused 14ms, total 14ms
+I/dalvikvm-heap(21485): Grow heap (frag case) to 12.303MB for 3637264-byte allocation
+D/dalvikvm(21485): GC_FOR_ALLOC freed 0K, 1% free 12564K/12652K, paused 13ms, total 13ms
+I/Choreographer(21485): Skipped 42 frames!  The application may be doing too much work on its main thread.
+D/dalvikvm(21485): GC_FOR_ALLOC freed 3632K, 29% free 9112K/12784K, paused 12ms, total 12ms
+I/dalvikvm-heap(21485): Grow heap (frag case) to 12.400MB for 3637264-byte allocation
+D/dalvikvm(21485): GC_FOR_ALLOC freed 1K, 1% free 12662K/12784K, paused 13ms, total 13ms
+W/AmazonS3Client(21485): No content length specified for stream data.  Stream contents will be buffered in memory and could result in out of memory errors.
+W/dalvikvm(21485): threadid=14: thread exiting with uncaught exception (group=0x419da700)
+--------- beginning of /dev/log/system
+E/AndroidRuntime(21485): FATAL EXCEPTION: Thread-15696
+E/AndroidRuntime(21485): java.lang.SecurityException: Permission denied (missing INTERNET permission?)
+E/AndroidRuntime(21485): 	at java.net.InetAddress.lookupHostByName(InetAddress.java:418)
+E/AndroidRuntime(21485): 	at java.net.InetAddress.getAllByNameImpl(InetAddress.java:236)
+E/AndroidRuntime(21485): 	at java.net.InetAddress.getAllByName(InetAddress.java:214)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.conn.SystemDefaultDnsResolver.resolve(SystemDefaultDnsResolver.java:45)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.conn.DefaultClientConnectionOperator.resolveHostname(DefaultClientConnectionOperator.java:278)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:162)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.conn.ManagedClientConnectionImpl.open(ManagedClientConnectionImpl.java:294)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:645)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:480)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805)
+E/AndroidRuntime(21485): 	at com.amazonaws.org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:784)
+E/AndroidRuntime(21485): 	at com.amazonaws.http.AmazonHttpClient.executeHelper(Unknown Source)
+E/AndroidRuntime(21485): 	at com.amazonaws.http.AmazonHttpClient.execute(Unknown Source)
+E/AndroidRuntime(21485): 	at com.amazonaws.services.s3.AmazonS3Client.invoke(Unknown Source)
+E/AndroidRuntime(21485): 	at com.amazonaws.services.s3.AmazonS3Client.putObject(Unknown Source)
+E/AndroidRuntime(21485): 	at com.ericrgon.s3.S3Uploader$1.run(S3Uploader.java:52)
+E/AndroidRuntime(21485): Caused by: libcore.io.GaiException: getaddrinfo failed: EAI_NODATA (No address associated with hostname)
+E/AndroidRuntime(21485): 	at libcore.io.Posix.getaddrinfo(Native Method)
+E/AndroidRuntime(21485): 	at libcore.io.ForwardingOs.getaddrinfo(ForwardingOs.java:61)
+E/AndroidRuntime(21485): 	at java.net.InetAddress.lookupHostByName(InetAddress.java:405)
+E/AndroidRuntime(21485): 	... 16 more
+E/AndroidRuntime(21485): Caused by: libcore.io.ErrnoException: getaddrinfo failed: EACCES (Permission denied)
+E/AndroidRuntime(21485): 	... 19 more
+W/IInputConnectionWrapper(21485): beginBatchEdit on inactive InputConnection
+W/IInputConnectionWrapper(21485): endBatchEdit on inactive InputConnection
+W/IInputConnectionWrapper(21485): beginBatchEdit on inactive InputConnection
+W/IInputConnectionWrapper(21485): endBatchEdit on inactive InputConnection
+D/dalvikvm(21485): GC_FOR_ALLOC freed 786K, 6% free 13146K/13968K, paused 15ms, total 15ms
+I/Process (21485): Sending signal. PID: 21485 SIG: 9
+D/dalvikvm(21952): Late-enabling CheckJNI
+D/libEGL  (21952): loaded /system/lib/egl/libEGL_adreno200.so
+D/libEGL  (21952): loaded /system/lib/egl/libGLESv1_CM_adreno200.so
+D/libEGL  (21952): loaded /system/lib/egl/libGLESv2_adreno200.so
+I/Adreno200-EGL(21952): <qeglDrvAPI_eglInitialize:265>: EGL 1.4 QUALCOMM Build: Iabe52cfaeae4c5fab1acacfe6f056ba15fa93274
+D/OpenGLRenderer(21952): Enabling debug mode 0
+D/dalvikvm(21952): GC_FOR_ALLOC freed 55K, 2% free 9012K/9104K, paused 15ms, total 15ms
+I/dalvikvm-heap(21952): Grow heap (frag case) to 12.303MB for 3637264-byte allocation
+D/dalvikvm(21952): GC_FOR_ALLOC freed 2K, 1% free 12562K/12660K, paused 15ms, total 15ms
+D/dalvikvm(21952): GC_FOR_ALLOC freed 3630K, 29% free 9111K/12780K, paused 12ms, total 12ms
+I/dalvikvm-heap(21952): Grow heap (frag case) to 12.400MB for 3637264-byte allocation
+D/dalvikvm(21952): GC_FOR_ALLOC freed 1K, 1% free 12662K/12780K, paused 22ms, total 22ms
+W/AmazonS3Client(21952): No content length specified for stream data.  Stream contents will be buffered in memory and could result in out of memory errors.
+D/dalvikvm(21952): GC_FOR_ALLOC freed 856K, 7% free 13076K/13968K, paused 25ms, total 25ms
+D/dalvikvm(21952): Debugger has detached; object registry had 1 entries
+D/dalvikvm(25006): Late-enabling CheckJNI
+D/libEGL  (25006): loaded /system/lib/egl/libEGL_adreno200.so
+D/libEGL  (25006): loaded /system/lib/egl/libGLESv1_CM_adreno200.so
+D/libEGL  (25006): loaded /system/lib/egl/libGLESv2_adreno200.so
+I/Adreno200-EGL(25006): <qeglDrvAPI_eglInitialize:265>: EGL 1.4 QUALCOMM Build: Iabe52cfaeae4c5fab1acacfe6f056ba15fa93274
+D/OpenGLRenderer(25006): Enabling debug mode 0
+D/dalvikvm(25006): GC_FOR_ALLOC freed 60K, 2% free 9012K/9112K, paused 15ms, total 15ms
+I/dalvikvm-heap(25006): Grow heap (frag case) to 12.303MB for 3637264-byte allocation
+D/dalvikvm(25006): GC_FOR_ALLOC freed 1K, 1% free 12562K/12668K, paused 13ms, total 13ms
+D/dalvikvm(25006): GC_CONCURRENT freed <1K, 1% free 12562K/12668K, paused 2ms+3ms, total 15ms
+D/dalvikvm(25006): GC_FOR_ALLOC freed 3630K, 29% free 9111K/12780K, paused 11ms, total 11ms
+I/dalvikvm-heap(25006): Grow heap (frag case) to 12.400MB for 3637264-byte allocation
+D/dalvikvm(25006): GC_CONCURRENT freed <1K, 1% free 12663K/12780K, paused 4ms+4ms, total 33ms
+D/dalvikvm(25006): WAIT_FOR_CONCURRENT_GC blocked 29ms
+W/AmazonS3Client(25006): No content length specified for stream data.  Stream contents will be buffered in memory and could result in out of memory errors.
+D/dalvikvm(25006): GC_CONCURRENT freed 792K, 6% free 13037K/13868K, paused 3ms+3ms, total 27ms
+W/IInputConnectionWrapper(25006): showStatusIcon on inactive InputConnection
