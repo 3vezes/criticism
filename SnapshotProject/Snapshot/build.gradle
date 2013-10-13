@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    compile 'com.google.guava:guava:14.0.1'
     compile files('libs/aws-android-sdk-1.6.1-s3.jar',
                   'libs/aws-android-sdk-1.6.1-core.jar')
 }
