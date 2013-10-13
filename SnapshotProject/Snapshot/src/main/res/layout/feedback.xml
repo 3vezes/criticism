@@ -50,7 +50,8 @@
                 android:id="@+id/screenshotGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:onClick="clickedIncludeScreenshot">
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -69,11 +70,13 @@
                         android:text="@string/send_screen_of_last_page"/>
                 </LinearLayout>
                 <CheckBox
+                    android:id="@+id/screenshotCheckbox"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_alignParentTop="true"
+                    android:checked="true"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -81,7 +84,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                android:onClick="clickedIncludeSystemData">
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -100,11 +104,13 @@
                         android:text="@string/share_data_message"/>
                 </LinearLayout>
                 <CheckBox
+                    android:id="@+id/systemDataCheckbox"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_alignParentTop="true"
+                    android:checked="true"/>
             </RelativeLayout>
 
             <ImageView

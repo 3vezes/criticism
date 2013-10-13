@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.ericrgon.s3.S3Uploader;
@@ -16,6 +17,9 @@ public class FeedbackActivity extends Activity {
 
     private Button send;
     private Button cancel;
+
+    private CheckBox screenshotCheckbox;
+    private CheckBox systemDataCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,9 @@ public class FeedbackActivity extends Activity {
         final byte[] bytes = getIntent().getByteArrayExtra("bitmap");
         final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         screenShot.setImageBitmap(bitmap);
+
+        screenshotCheckbox = (CheckBox) findViewById(R.id.screenshotCheckbox);
+        systemDataCheckbox = (CheckBox) findViewById(R.id.systemDataCheckbox);
 
         send = (Button) findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +55,13 @@ public class FeedbackActivity extends Activity {
                 onBackPressed();
             }
         });
+    }
+
+    public void clickedIncludeScreenshot(View view){
+        screenshotCheckbox.toggle();
+    }
+
+    public void clickedIncludeSystemData(View view){
+        systemDataCheckbox.toggle();
     }
 }
