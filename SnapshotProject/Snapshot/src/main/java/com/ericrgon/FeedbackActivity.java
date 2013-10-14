@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ericrgon.s3.S3Uploader;
@@ -20,6 +21,7 @@ public class FeedbackActivity extends Activity {
 
     private CheckBox screenshotCheckbox;
     private CheckBox systemDataCheckbox;
+    private EditText description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class FeedbackActivity extends Activity {
         final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         screenShot.setImageBitmap(bitmap);
 
+        description = (EditText) findViewById(R.id.description);
         screenshotCheckbox = (CheckBox) findViewById(R.id.screenshotCheckbox);
         systemDataCheckbox = (CheckBox) findViewById(R.id.systemDataCheckbox);
 
@@ -43,7 +46,16 @@ public class FeedbackActivity extends Activity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,BUCKET_NAME,bytes);
+                S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,BUCKET_NAME);
+                
+                if(screenshotCheckbox.isChecked()){
+                    s3Uploader.setDescription(description.getText().toString());
+                }
+
+                s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
+
+                s3Uploader.setScreenshot(bytes);
+
                 s3Uploader.upload();
             }
         });
