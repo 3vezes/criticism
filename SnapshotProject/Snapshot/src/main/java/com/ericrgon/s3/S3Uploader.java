@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ericrgon.R;
+import com.ericrgon.log.Logs;
 import com.google.common.base.Splitter;
 
 import java.io.BufferedReader;
@@ -144,7 +145,8 @@ public class S3Uploader {
                     } else if(tag.contains(DESCRIPTION_TAG)){
                         current = current.replace(DESCRIPTION_TAG,description);
                     } else if(tag.contains(LOGS_TAG)){
-                        current = current.replace(LOGS_TAG,"My Logs");
+                        String logsString = Logs.getLogString();
+                        current = current.replace(LOGS_TAG,logsString);
                     }
                 }
             }
