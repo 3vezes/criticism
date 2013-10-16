@@ -91,7 +91,7 @@ public class S3Uploader {
                     index.setAccessControlList(ACCESS_CONTROL_LIST);
                     amazonS3Client.putObject(index);
 
-                    sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css");
+                    sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css");
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -106,9 +106,12 @@ public class S3Uploader {
         }.start();
     }
 
-    private void sendResource(AmazonS3Client client,int resourceId,String destinationFileName) throws IOException {
+    private void sendResource(AmazonS3Client client,int resourceId,String destinationFileName,String contentType) throws IOException {
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(contentType);
+
         InputStream resourceStream = context.getResources().openRawResource(resourceId);
-        PutObjectRequest request = new PutObjectRequest(getPath(),destinationFileName,resourceStream,new ObjectMetadata());
+        PutObjectRequest request = new PutObjectRequest(getPath(),destinationFileName,resourceStream,metadata);
         request.setAccessControlList(ACCESS_CONTROL_LIST);
         client.putObject(request);
         resourceStream.close();
