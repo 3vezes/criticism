@@ -2,7 +2,9 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
     <LinearLayout
         android:id="@+id/selectionButtons"
         android:layout_height="wrap_content"
@@ -112,12 +114,6 @@
                     android:layout_alignParentTop="true"
                     android:checked="true"/>
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/screenshot"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
         </LinearLayout>
     </ScrollView>
 

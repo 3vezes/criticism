@@ -3,6 +3,7 @@ package com.ericrgon.s3;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AccessControlList;
@@ -27,7 +28,7 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 
 
-public class S3Uploader {
+public class S3Uploader extends AsyncTask<Void,Void,Void>{
 
     private final Context context;
 
@@ -180,5 +181,13 @@ public class S3Uploader {
 
     public void setScreenshot(byte[] screenshot) {
         this.screenshot = screenshot;
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        upload();
+
+        return null;
     }
 }
