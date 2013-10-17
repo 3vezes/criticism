@@ -12,7 +12,7 @@
     <string name="send_screen_of_last_page">Send screenshot of the last page you were on.</string>
     <string name="include_system_data">Include system data</string>
     <string name="share_data_message">Share system data to better diagnose the problem.</string>
-    <string name="sending_report">Sending report...</string>
+    <string name="sending_report">Sending report…</string>
     <string name="thank_you">Thanks for the feedback!</string>
     <string name="bucket_name_not_found">Cannot find \"feedback_bucket\" in your strings.xml. Please specify your S3 bucket.</string>
 
