@@ -9,6 +9,8 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
 
+import com.ericrgon.criticism.FeedbackActivity;
+
 import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends Activity {

@@ -1,4 +1,4 @@
-package com.ericrgon.s3;
+package com.ericrgon.criticism.s3;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -12,8 +12,8 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.ericrgon.R;
-import com.ericrgon.log.Logs;
+import com.ericrgon.criticism.R;
+import com.ericrgon.criticism.log.Logs;
 import com.google.common.base.Splitter;
 
 import java.io.BufferedReader;

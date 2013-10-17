@@ -1,4 +1,4 @@
-package com.ericrgon;
+package com.ericrgon.criticism;
 
 
 import android.app.ProgressDialog;

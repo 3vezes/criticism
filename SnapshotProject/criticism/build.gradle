@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.5.+'
+    }
+}
+apply plugin: 'android-library'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "18.1.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 14
+    }
+}
+
+dependencies {
+    compile 'com.google.guava:guava:14.0.1'
+    compile files('libs/aws-android-sdk-1.6.1-s3.jar',
+                  'libs/aws-android-sdk-1.6.1-core.jar')
+}

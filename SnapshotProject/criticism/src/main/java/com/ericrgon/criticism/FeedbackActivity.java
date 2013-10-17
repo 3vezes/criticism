@@ -1,4 +1,4 @@
-package com.ericrgon;
+package com.ericrgon.criticism;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ericrgon.s3.S3Uploader;
+import com.ericrgon.criticism.s3.S3Uploader;
 
 public class FeedbackActivity extends Activity {
 

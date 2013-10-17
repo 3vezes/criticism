@@ -3,17 +3,4 @@
     <string name="feedback_bucket">Feedback</string>
     <string name="app_name">Snapshot</string>
     <string name="action_settings">Settings</string>
-    <string name="send_feedback_for">Send feedback for </string>
-    <string name="cancel">Cancel</string>
-    <string name="preview">Preview</string>
-    <string name="send">Send</string>
-    <string name="description">Description</string>
-    <string name="include_screenshot">Include screenshot</string>
-    <string name="send_screen_of_last_page">Send screenshot of the last page you were on.</string>
-    <string name="include_system_data">Include system data</string>
-    <string name="share_data_message">Share system data to better diagnose the problem.</string>
-    <string name="sending_report">Sending report…</string>
-    <string name="thank_you">Thanks for the feedback!</string>
-    <string name="bucket_name_not_found">Cannot find \"feedback_bucket\" in your strings.xml. Please specify your S3 bucket.</string>
-
 </resources>
