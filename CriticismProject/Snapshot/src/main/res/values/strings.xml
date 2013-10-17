@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feedback_bucket">Feedback</string>
-    <string name="app_name">Snapshot</string>
+    <string name="app_name">Example App</string>
     <string name="action_settings">Settings</string>
 </resources>
