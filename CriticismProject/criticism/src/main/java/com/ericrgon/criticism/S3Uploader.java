@@ -12,7 +12,6 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.google.common.base.Splitter;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -25,6 +24,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class S3Uploader extends AsyncTask<Void,Void,Void>{
@@ -46,6 +47,7 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
     private static final AccessControlList ACCESS_CONTROL_LIST = new AccessControlList();
 
     private static final String TAG_REGEX = ".*\\{[^)]*\\}.*";
+    private static final Pattern TAG_PATTERN = Pattern.compile(TAG_REGEX);
 
     private static final String APP_TAG = "{app_name}";
     private static final String VERSION_TAG = "{version}";
@@ -144,12 +146,13 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
 
         OutputStreamWriter stringWriter = new OutputStreamWriter(fileOutputStream);
 
-        String current = "";
+        String current;
         while ((current = bufferedReader.readLine()) != null){
             //Check if the current line contains a tag.
             if(current.matches(TAG_REGEX)){
-                Iterable<String> tags = Splitter.on(TAG_REGEX).split(current);
-                for(String tag : tags){
+                Matcher matcher = TAG_PATTERN.matcher(current);
+                while (matcher.find()){
+                    String tag = matcher.group(0);
                     if (tag.contains(APP_TAG)) {
                         current = current.replace(APP_TAG,applicationName);
 
@@ -161,6 +164,7 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
                         String logsString = Logs.getLogString();
                         current = current.replace(LOGS_TAG,logsString);
                     }
+
                 }
             }
             stringWriter.write(current + "\n");
