@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 
 import com.ericrgon.criticism.FeedbackActivity;
 
@@ -24,12 +24,22 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    public void snap(View view){
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.send_feedback:
+                snap();
+                return true;
+            default:
+                return super.onMenuItemSelected(featureId, item);
+        }
+    }
+
+    public void snap(){
         Intent feedbackIntent = new Intent(this,FeedbackActivity.class);
         feedbackIntent.putExtra("bitmap",compressBitmap(getBitmapFromView(this)));
         startActivity(feedbackIntent);
