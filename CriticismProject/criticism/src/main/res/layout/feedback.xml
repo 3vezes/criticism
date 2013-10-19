@@ -17,10 +17,6 @@
             android:text="@string/cancel"/>
         <View style="@style/Divider.Vertical"/>
         <Button
-            style="@style/Button.Borderless"
-            android:text="@string/preview"/>
-        <View style="@style/Divider.Vertical"/>
-        <Button
             android:id="@+id/send"
             style="@style/Button.Borderless"
             android:text="@string/send"/>

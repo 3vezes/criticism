@@ -1,4 +1,4 @@
-package com.ericrgon.criticism.log;
+package com.ericrgon.criticism;
 
 import java.io.BufferedReader;
 import java.io.IOException;

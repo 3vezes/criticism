@@ -11,8 +11,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ericrgon.criticism.s3.S3Uploader;
-
 public class FeedbackActivity extends Activity {
 
     private Button send;

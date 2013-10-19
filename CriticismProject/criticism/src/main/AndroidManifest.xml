@@ -12,12 +12,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CriticismTheme" >
         <activity
-            android:name="com.ericrgon.criticism.FeedbackActivity"
+            android:name=".FeedbackActivity"
             android:label="@string/app_name"
-            android:theme="@style/FeedbackTheme">
+            android:theme="@style/CriticismTheme">
         </activity>
     </application>
-
 </manifest>
