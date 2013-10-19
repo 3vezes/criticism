@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -56,7 +57,7 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
     public S3Uploader(Context context,String bucketName) {
         this.context = context;
         this.bucketName = bucketName;
-        this.reportName = new Date().toString();
+        this.reportName = generateReportName(context);
         this.cacheDir = context.getCacheDir();
 
         applicationName = context.getString(context.getApplicationInfo().labelRes);
@@ -68,6 +69,19 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
         } catch (PackageManager.NameNotFoundException e) {}
 
         ACCESS_CONTROL_LIST.grantAllPermissions(GRANT);
+    }
+
+    /**
+     * Report name is structured as com.example-hh:mm-dd-mm-yyyy
+     *
+     * @param context
+     * @return
+     */
+    private String generateReportName(Context context) {
+        String packageName = context.getPackageName();
+        Date currentDate = new Date();
+        SimpleDateFormat formattedDate = new SimpleDateFormat("HH:mm-dd-MM-yyyy");
+        return packageName + "-" + formattedDate.format(currentDate);
     }
 
     public void upload(){
