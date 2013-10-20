@@ -14,6 +14,3 @@ Setting up
 
 ### Launch Activity ###
 
-
-
-![screenshot](https://github.com/Eric-Gonzalez/criticism/raw/master/report_and_screenshot.png "screenshot")
