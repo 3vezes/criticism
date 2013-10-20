@@ -16,4 +16,6 @@
     <string name="bucket_name_not_found">Cannot find \"feedback_bucket\" in your strings.xml. Please specify your S3 bucket.</string>
     <string name="no_description">Empty description</string>
     <string name="no_logs">No logs provided.</string>
+    <string name="failed_to_upload">Failed to upload feedback report</string>
+    <string name="retry">Retry</string>
 </resources>

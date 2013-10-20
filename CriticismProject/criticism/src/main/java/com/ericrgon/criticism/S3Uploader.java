@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AccessControlList;
 import com.amazonaws.services.s3.model.Grant;
@@ -22,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class S3Uploader extends AsyncTask<Void,Void,Void>{
+public class S3Uploader extends AsyncTask<Void,Void,Boolean>{
 
     private final Context context;
 
@@ -86,20 +87,22 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
-        AmazonS3Client amazonS3Client = new AmazonS3Client();
-
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(screenshot);
-        ObjectMetadata metadata = new ObjectMetadata();
-
-        PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(), "screenshot.png", byteArrayInputStream, metadata);
-        putObjectRequest.setAccessControlList(ACCESS_CONTROL_LIST);
-        amazonS3Client.putObject(putObjectRequest);
-
-        ReportGenerator reportGenerator = new ReportGenerator(context,applicationName,applicationVersion,description,cacheDir,sendLogs);
+    protected Boolean doInBackground(Void... voids) {
+        boolean isUploadSuccessful = false;
 
         File report = null;
         try {
+            AmazonS3Client amazonS3Client = new AmazonS3Client();
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(screenshot);
+            ObjectMetadata metadata = new ObjectMetadata();
+
+            PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(), "screenshot.png", byteArrayInputStream, metadata);
+            putObjectRequest.setAccessControlList(ACCESS_CONTROL_LIST);
+            amazonS3Client.putObject(putObjectRequest);
+
+            ReportGenerator reportGenerator = new ReportGenerator(context,applicationName,applicationVersion,description,cacheDir,sendLogs);
+
             report = reportGenerator.generate(context);
 
             //Upload report
@@ -109,17 +112,18 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
 
             sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css");
 
+            isUploadSuccessful = true;
+
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (AmazonClientException e){
         } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             if(report != null){
                 report.delete();
             }
         }
 
-        return null;
+        return isUploadSuccessful;
     }
 
     public void setDescription(String description) {

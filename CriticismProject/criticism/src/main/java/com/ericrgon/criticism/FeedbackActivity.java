@@ -1,7 +1,9 @@
 package com.ericrgon.criticism;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -88,13 +90,41 @@ public class FeedbackActivity extends Activity {
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
+            protected void onCancelled() {
+                super.onCancelled();
+                progressDialog.dismiss();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean isUploadSuccessful) {
+                super.onPostExecute(isUploadSuccessful);
                 progressDialog.dismiss();
 
-                Toast.makeText(FeedbackActivity.this,getString(R.string.thank_you),Toast.LENGTH_LONG).show();
+                if(isUploadSuccessful){
 
-                finish();
-                super.onPostExecute(aVoid);
+
+                    Toast.makeText(FeedbackActivity.this,getString(R.string.thank_you),Toast.LENGTH_LONG).show();
+
+                    finish();
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(FeedbackActivity.this)
+                            .setMessage(getString(R.string.failed_to_upload))
+                            .setPositiveButton(getString(R.string.retry),new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    send(null);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.cancel),new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Exit without sending the report.
+                                    finish();
+                                }
+                            }).create();
+
+                    alertDialog.show();
+                }
             }
         };
 
@@ -105,8 +135,6 @@ public class FeedbackActivity extends Activity {
         }
 
         s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
-
-
 
         s3Uploader.execute();
     }
