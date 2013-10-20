@@ -115,8 +115,11 @@ class S3Uploader extends AsyncTask<Void,Void,Boolean>{
             isUploadSuccessful = true;
 
         } catch (FileNotFoundException ignored) {
+            ignored.printStackTrace();
         } catch (AmazonClientException ignored){
-        } catch (IOException ignored) {
+            ignored.printStackTrace();
+        } catch (IOException ignored){
+            ignored.printStackTrace();
         } finally {
             if(report != null){
                 report.delete();
