@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 public class ReportGenerator {
 
-
-
     private static final String TAG_REGEX = ".*\\{[^)]*\\}.*";
     private static final Pattern TAG_PATTERN = Pattern.compile(TAG_REGEX);
 
@@ -60,7 +58,6 @@ public class ReportGenerator {
                     String tag = matcher.group(0);
                     if (tag.contains(APP_TAG)) {
                         current = current.replace(APP_TAG,applicationName);
-
                     } else if(tag.contains(VERSION_TAG)){
                         current = current.replace(VERSION_TAG,applicationVersion);
                     } else if(tag.contains(DESCRIPTION_TAG)){

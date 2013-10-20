@@ -1,1 +1,1 @@
-include ':Snapshot', ':criticism'
+include ':criticism-sample', ':criticism'
