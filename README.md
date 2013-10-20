@@ -16,7 +16,7 @@ Setting up
 ### Specify Bucket ###
 Specify the bucket name in your strings.xml. Make sure the bucket is writable. 
 ```xml
-    <string name="feedback_bucket">Feedback</string>
+    <string name="feedback_bucket">...</string>
 ```
 ### Launch Activity ###
 Attach a screenshot by bundling it with the intent as an extra. Use the static method Snapshot.snap() to capture the current view.
