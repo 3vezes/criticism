@@ -30,7 +30,7 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
     private final String reportName;
     private final File cacheDir;
 
-    private byte[] screenshot;
+    private byte[] screenshot = {};
     private String description;
     private boolean sendLogs;
 
@@ -55,45 +55,6 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
         } catch (PackageManager.NameNotFoundException e) {}
 
         ACCESS_CONTROL_LIST.grantAllPermissions(GRANT);
-    }
-
-    public void upload(){
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                AmazonS3Client amazonS3Client = new AmazonS3Client();
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(screenshot);
-                ObjectMetadata metadata = new ObjectMetadata();
-
-                PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(), "screenshot.png", byteArrayInputStream, metadata);
-                putObjectRequest.setAccessControlList(ACCESS_CONTROL_LIST);
-                amazonS3Client.putObject(putObjectRequest);
-
-                ReportGenerator reportGenerator = new ReportGenerator(applicationName,applicationVersion,description,cacheDir);
-
-                File report = null;
-                try {
-                    report = reportGenerator.generate(context);
-
-                    //Upload report
-                    PutObjectRequest index = new PutObjectRequest(getPath(),"index.html",report);
-                    index.setAccessControlList(ACCESS_CONTROL_LIST);
-                    amazonS3Client.putObject(index);
-
-                    sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css");
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(report != null){
-                        report.delete();
-                    }
-                }
-            }
-        }.start();
     }
 
     private void sendResource(AmazonS3Client client,int resourceId,String destinationFileName,String contentType) throws IOException {
@@ -126,7 +87,38 @@ public class S3Uploader extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
-        upload();
+        AmazonS3Client amazonS3Client = new AmazonS3Client();
+
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(screenshot);
+        ObjectMetadata metadata = new ObjectMetadata();
+
+        PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(), "screenshot.png", byteArrayInputStream, metadata);
+        putObjectRequest.setAccessControlList(ACCESS_CONTROL_LIST);
+        amazonS3Client.putObject(putObjectRequest);
+
+        ReportGenerator reportGenerator = new ReportGenerator(context,applicationName,applicationVersion,description,cacheDir,sendLogs);
+
+        File report = null;
+        try {
+            report = reportGenerator.generate(context);
+
+            //Upload report
+            PutObjectRequest index = new PutObjectRequest(getPath(),"index.html",report);
+            index.setAccessControlList(ACCESS_CONTROL_LIST);
+            amazonS3Client.putObject(index);
+
+            sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(report != null){
+                report.delete();
+            }
+        }
+
         return null;
     }
 

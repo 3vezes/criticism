@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 public class FeedbackActivity extends Activity {
 
+    byte[] bytes = {};
+
     private Button send;
     private Button cancel;
 
@@ -32,7 +34,7 @@ public class FeedbackActivity extends Activity {
 
         bucketName = loadBucket();
 
-        final byte[] bytes = getIntent().getByteArrayExtra("bitmap");
+        bytes = getIntent().getByteArrayExtra("bitmap");
         final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
         description = (EditText) findViewById(R.id.description);
@@ -40,40 +42,6 @@ public class FeedbackActivity extends Activity {
         systemDataCheckbox = (CheckBox) findViewById(R.id.systemDataCheckbox);
 
         send = (Button) findViewById(R.id.send);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final ProgressDialog progressDialog = new SendingDialog(FeedbackActivity.this);
-
-                final S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,bucketName){
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        progressDialog.show();
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        progressDialog.dismiss();
-
-                        Toast.makeText(FeedbackActivity.this,getString(R.string.thank_you),Toast.LENGTH_LONG).show();
-
-                        finish();
-                        super.onPostExecute(aVoid);
-                    }
-                };
-
-                if(screenshotCheckbox.isChecked()){
-                    s3Uploader.setDescription(description.getText().toString());
-                }
-
-                s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
-
-                s3Uploader.setScreenshot(bytes);
-
-                s3Uploader.execute();
-            }
-        });
 
         cancel = (Button) findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -107,5 +75,39 @@ public class FeedbackActivity extends Activity {
 
     public void clickedIncludeSystemData(View view){
         systemDataCheckbox.toggle();
+    }
+
+    public void send(View view) {
+        final ProgressDialog progressDialog = new SendingDialog(FeedbackActivity.this);
+
+        final S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,bucketName){
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                progressDialog.dismiss();
+
+                Toast.makeText(FeedbackActivity.this,getString(R.string.thank_you),Toast.LENGTH_LONG).show();
+
+                finish();
+                super.onPostExecute(aVoid);
+            }
+        };
+
+        s3Uploader.setDescription(description.getText().toString());
+
+        if(screenshotCheckbox.isChecked()){
+            s3Uploader.setScreenshot(bytes);
+        }
+
+        s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
+
+
+
+        s3Uploader.execute();
     }
 }

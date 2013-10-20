@@ -19,8 +19,8 @@
         <Button
             android:id="@+id/send"
             style="@style/Button.Borderless"
-            android:text="@string/send"/>
-
+            android:text="@string/send"
+            android:onClick="send"/>
     </LinearLayout>
     <View
         style="@style/Divider.Horizontal"

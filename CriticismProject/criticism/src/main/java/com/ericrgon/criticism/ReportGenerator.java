@@ -27,12 +27,22 @@ public class ReportGenerator {
     private final String applicationVersion;
     private final String description;
     private final File cacheDir;
+    private final boolean sendLogs;
 
-    public ReportGenerator(String applicationName, String applicationVersion, String description, File cacheDir) {
-        this.applicationName = applicationName;
-        this.applicationVersion = applicationVersion;
-        this.description = description;
+    private final String defaultNoDescription;
+    private final String defaultNoLogs;
+
+
+    public ReportGenerator(Context context,String applicationName, String applicationVersion, String description, File cacheDir, boolean sendLogs) {
+        this.sendLogs = sendLogs;
+        this.applicationName = nullToEmpty(applicationName);
+        this.applicationVersion = nullToEmpty(applicationVersion);
+        this.description = nullToEmpty(description);
         this.cacheDir = cacheDir;
+
+        this.defaultNoDescription = context.getString(R.string.no_description);
+        this.defaultNoLogs = context.getString(R.string.no_logs);
+
     }
 
     public File generate(Context context) throws IOException {
@@ -61,12 +71,12 @@ public class ReportGenerator {
                     } else if(tag.contains(VERSION_TAG)){
                         current = current.replace(VERSION_TAG,applicationVersion);
                     } else if(tag.contains(DESCRIPTION_TAG)){
-                        current = current.replace(DESCRIPTION_TAG,description);
+                        String reportDescription = description.isEmpty() ? defaultNoDescription : description;
+                        current = current.replace(DESCRIPTION_TAG,reportDescription);
                     } else if(tag.contains(LOGS_TAG)){
-                        String logsString = Logs.getLogString();
+                        String logsString = sendLogs ? Logs.getLogString() : defaultNoLogs;
                         current = current.replace(LOGS_TAG,logsString);
                     }
-
                 }
             }
             stringWriter.write(current + "\n");
@@ -75,5 +85,9 @@ public class ReportGenerator {
         stringWriter.close();
 
         return cachedIdex;
+    }
+
+    private String nullToEmpty(String input){
+        return input == null ? "" : input;
     }
 }
