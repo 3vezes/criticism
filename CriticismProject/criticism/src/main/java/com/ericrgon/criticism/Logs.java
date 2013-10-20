@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Logs {
+class Logs {
 
     public static String getLogString() throws IOException {
         Process process = Runtime.getRuntime().exec("logcat -d");

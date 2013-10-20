@@ -14,7 +14,8 @@
         <Button
             android:id="@+id/cancel"
             style="@style/Button.Borderless"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel"
+            android:onClick="cancel"/>
         <View style="@style/Divider.Vertical"/>
         <Button
             android:id="@+id/send"

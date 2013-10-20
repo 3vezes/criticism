@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class S3Uploader extends AsyncTask<Void,Void,Boolean>{
+class S3Uploader extends AsyncTask<Void,Void,Boolean>{
 
     private final Context context;
 
@@ -53,7 +53,7 @@ public class S3Uploader extends AsyncTask<Void,Void,Boolean>{
         try {
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             applicationVersion = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {}
+        } catch (PackageManager.NameNotFoundException ignored) {}
 
         ACCESS_CONTROL_LIST.grantAllPermissions(GRANT);
     }
@@ -114,9 +114,9 @@ public class S3Uploader extends AsyncTask<Void,Void,Boolean>{
 
             isUploadSuccessful = true;
 
-        } catch (FileNotFoundException e) {
-        } catch (AmazonClientException e){
-        } catch (IOException e) {
+        } catch (FileNotFoundException ignored) {
+        } catch (AmazonClientException ignored){
+        } catch (IOException ignored) {
         } finally {
             if(report != null){
                 report.delete();

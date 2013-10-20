@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,10 +14,7 @@ import static com.ericrgon.criticism.Screenshot.SCREENSHOT_EXTRA;
 
 public class FeedbackActivity extends Activity {
 
-    byte[] bytes = {};
-
-    private Button send;
-    private Button cancel;
+    private byte[] bytes = {};
 
     private CheckBox screenshotCheckbox;
     private CheckBox systemDataCheckbox;
@@ -45,16 +41,6 @@ public class FeedbackActivity extends Activity {
         description = (EditText) findViewById(R.id.description);
         screenshotCheckbox = (CheckBox) findViewById(R.id.screenshotCheckbox);
         systemDataCheckbox = (CheckBox) findViewById(R.id.systemDataCheckbox);
-
-        send = (Button) findViewById(R.id.send);
-
-        cancel = (Button) findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     private String loadBucket() {
@@ -140,5 +126,9 @@ public class FeedbackActivity extends Activity {
         s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
 
         s3Uploader.execute();
+    }
+
+    public void cancel(View view) {
+        onBackPressed();
     }
 }
