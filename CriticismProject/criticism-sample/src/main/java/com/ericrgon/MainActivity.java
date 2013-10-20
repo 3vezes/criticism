@@ -2,16 +2,14 @@ package com.ericrgon;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ericrgon.criticism.FeedbackActivity;
+import com.ericrgon.criticism.Screenshot;
 
-import java.io.ByteArrayOutputStream;
+import static com.ericrgon.criticism.Screenshot.SCREENSHOT_EXTRA;
 
 public class MainActivity extends Activity {
 
@@ -41,22 +39,7 @@ public class MainActivity extends Activity {
 
     public void snap(){
         Intent feedbackIntent = new Intent(this,FeedbackActivity.class);
-        feedbackIntent.putExtra("bitmap",compressBitmap(getBitmapFromView(this)));
+        feedbackIntent.putExtra(SCREENSHOT_EXTRA, Screenshot.snap(MainActivity.this));
         startActivity(feedbackIntent);
     }
-
-    private byte[] compressBitmap(Bitmap bitmap){
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    private Bitmap getBitmapFromView(Activity activity){
-        DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
-        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels,displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        activity.getWindow().getDecorView().draw(canvas);
-        return bitmap;
-    }
-
 }

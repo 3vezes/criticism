@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import static com.ericrgon.criticism.Screenshot.SCREENSHOT_EXTRA;
 
 public class FeedbackActivity extends Activity {
 
@@ -36,8 +36,11 @@ public class FeedbackActivity extends Activity {
 
         bucketName = loadBucket();
 
-        bytes = getIntent().getByteArrayExtra("bitmap");
-        final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if(getIntent().hasExtra(SCREENSHOT_EXTRA)){
+            bytes = getIntent().getByteArrayExtra(SCREENSHOT_EXTRA);
+            View screenshotGroup = findViewById(R.id.screenshotGroup);
+            screenshotGroup.setVisibility(View.VISIBLE);
+        }
 
         description = (EditText) findViewById(R.id.description);
         screenshotCheckbox = (CheckBox) findViewById(R.id.screenshotCheckbox);
