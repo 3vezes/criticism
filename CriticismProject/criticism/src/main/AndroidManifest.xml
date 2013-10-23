@@ -17,5 +17,6 @@
             android:label="@string/app_name"
             android:theme="@style/CriticismTheme">
         </activity>
+        <service android:name=".S3Uploader"/>
     </application>
 </manifest>

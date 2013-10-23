@@ -1,15 +1,15 @@
 package com.ericrgon.criticism;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import static com.ericrgon.criticism.S3Uploader.BUCKET_NAME;
+import static com.ericrgon.criticism.S3Uploader.DESCRIPTION;
+import static com.ericrgon.criticism.S3Uploader.SCREENSHOT;
 import static com.ericrgon.criticism.Screenshot.SCREENSHOT_EXTRA;
 
 public class FeedbackActivity extends Activity {
@@ -64,68 +64,25 @@ public class FeedbackActivity extends Activity {
         screenshotCheckbox.toggle();
     }
 
-    public void clickedIncludeSystemData(View view){
+    public void clickedIncludeSystemData(@SuppressWarnings("UnusedParameters") View view){
         systemDataCheckbox.toggle();
     }
 
     public void send(View view) {
-        final ProgressDialog progressDialog = new SendingDialog(FeedbackActivity.this);
-
-        final S3Uploader s3Uploader = new S3Uploader(FeedbackActivity.this,bucketName){
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog.show();
-            }
-
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                progressDialog.dismiss();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isUploadSuccessful) {
-                super.onPostExecute(isUploadSuccessful);
-                progressDialog.dismiss();
-
-                if(isUploadSuccessful){
-
-
-                    Toast.makeText(FeedbackActivity.this,getString(R.string.thank_you),Toast.LENGTH_LONG).show();
-
-                    finish();
-                } else {
-                    AlertDialog alertDialog = new AlertDialog.Builder(FeedbackActivity.this)
-                            .setMessage(getString(R.string.failed_to_upload))
-                            .setPositiveButton(getString(R.string.retry),new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    send(null);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.cancel),new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //Exit without sending the report.
-                                    finish();
-                                }
-                            }).create();
-
-                    alertDialog.show();
-                }
-            }
-        };
-
-        s3Uploader.setDescription(description.getText().toString());
+        Intent uploadIntent = new Intent(this,S3Uploader.class);
+        uploadIntent.putExtra(BUCKET_NAME,bucketName);
+        uploadIntent.putExtra(DESCRIPTION,description.getText().toString());
+        uploadIntent.putExtra(S3Uploader.LOGS,systemDataCheckbox.isChecked());
 
         if(screenshotCheckbox.isChecked()){
-            s3Uploader.setScreenshot(bytes);
+            uploadIntent.putExtra(SCREENSHOT,bytes);
         }
 
-        s3Uploader.setSendLogs(systemDataCheckbox.isChecked());
+        startService(uploadIntent);
 
-        s3Uploader.execute();
+        finish();
+
+        //TODO: Check if the network connection is available.
     }
 
     public void cancel(View view) {

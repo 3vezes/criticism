@@ -1,9 +1,10 @@
 package com.ericrgon.criticism;
 
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -23,72 +24,66 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-class S3Uploader extends AsyncTask<Void,Void,Boolean>{
+public class S3Uploader extends IntentService{
 
-    private final Context context;
+    public static final String BUCKET_NAME = "bucket_name";
+    public static final String DESCRIPTION = "description";
+    public static final String SCREENSHOT = "screenshot";
+    public static final String LOGS = "logs";
 
-    private final String bucketName;
-    private final String reportName;
-    private final File cacheDir;
+    private Context context;
 
-    private byte[] screenshot = {};
-    private String description;
-    private boolean sendLogs;
+    private File cacheDir;
 
-    private final String applicationName;
+    private String applicationName;
     private String applicationVersion = "Unknown Version";
 
     private static final Grant GRANT = new Grant(GroupGrantee.AllUsers, Permission.FullControl);
     private static final AccessControlList ACCESS_CONTROL_LIST = new AccessControlList();
 
-    public S3Uploader(Context context,String bucketName) {
-        this.context = context;
-        this.bucketName = bucketName;
-        this.reportName = generateReportName(context);
-        this.cacheDir = context.getCacheDir();
 
-        applicationName = context.getString(context.getApplicationInfo().labelRes);
-
-        PackageInfo pInfo = null;
-        try {
-            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            applicationVersion = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException ignored) {}
-
-        ACCESS_CONTROL_LIST.grantAllPermissions(GRANT);
+    public S3Uploader() {
+        super("S3Uploader");
     }
 
-    private void sendResource(AmazonS3Client client,int resourceId,String destinationFileName,String contentType) throws IOException {
+    private void sendResource(AmazonS3Client client,int resourceId,String destinationFileName,String contentType,String bucketName,String reportName) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);
 
         InputStream resourceStream = context.getResources().openRawResource(resourceId);
-        PutObjectRequest request = new PutObjectRequest(getPath(),destinationFileName,resourceStream,metadata);
+        PutObjectRequest request = new PutObjectRequest(getPath(bucketName,reportName),destinationFileName,resourceStream,metadata);
         request.setAccessControlList(ACCESS_CONTROL_LIST);
         client.putObject(request);
         resourceStream.close();
     }
 
-    private String getPath(){
+    private String getPath(String bucketName,String reportName){
         return bucketName + "/" + reportName;
     }
 
     /**
      * Report name is structured as com.example-hh:mm-dd-mm-yyyy
      *
-     * @param context
      * @return
+     * @param applicationContext
      */
-    private String generateReportName(Context context) {
-        String packageName = context.getPackageName();
+    private String generateReportName(Context applicationContext) {
+        String packageName = applicationContext.getPackageName();
         Date currentDate = new Date();
         SimpleDateFormat formattedDate = new SimpleDateFormat("HH:mm-dd-MM-yyyy");
         return packageName + "-" + formattedDate.format(currentDate);
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
-        boolean isUploadSuccessful = false;
+    protected void onHandleIntent(Intent intent) {
+        init();
+
+        String bucketName = intent.getStringExtra(BUCKET_NAME);
+        byte[] screenshot = intent.getByteArrayExtra(SCREENSHOT);
+        String description = intent.getStringExtra(DESCRIPTION);
+        boolean sendLogs = intent.getBooleanExtra(LOGS,false);
+
+        String reportName = generateReportName(getApplicationContext());
 
         File report = null;
         try {
@@ -97,7 +92,7 @@ class S3Uploader extends AsyncTask<Void,Void,Boolean>{
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(screenshot);
             ObjectMetadata metadata = new ObjectMetadata();
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(), "screenshot.png", byteArrayInputStream, metadata);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(getPath(bucketName,reportName), "screenshot.png", byteArrayInputStream, metadata);
             putObjectRequest.setAccessControlList(ACCESS_CONTROL_LIST);
             amazonS3Client.putObject(putObjectRequest);
 
@@ -106,13 +101,11 @@ class S3Uploader extends AsyncTask<Void,Void,Boolean>{
             report = reportGenerator.generate(context);
 
             //Upload report
-            PutObjectRequest index = new PutObjectRequest(getPath(),"index.html",report);
+            PutObjectRequest index = new PutObjectRequest(getPath(bucketName,reportName),"index.html",report);
             index.setAccessControlList(ACCESS_CONTROL_LIST);
             amazonS3Client.putObject(index);
 
-            sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css");
-
-            isUploadSuccessful = true;
+            sendResource(amazonS3Client, R.raw.bootstrap,"bootstrap.css","text/css",bucketName,reportName);
 
         } catch (FileNotFoundException ignored) {
             ignored.printStackTrace();
@@ -125,27 +118,18 @@ class S3Uploader extends AsyncTask<Void,Void,Boolean>{
                 report.delete();
             }
         }
-
-        return isUploadSuccessful;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private void init() {
+        this.context = getApplication();
+        this.cacheDir = context.getCacheDir();
+        applicationName = context.getString(context.getApplicationInfo().labelRes);
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            applicationVersion = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {}
 
-    public void setSendLogs(boolean sendLogs) {
-        this.sendLogs = sendLogs;
-    }
-
-    public boolean isSendLogs() {
-        return sendLogs;
-    }
-
-    public void setScreenshot(byte[] screenshot) {
-        this.screenshot = screenshot;
-    }
-
-    public byte[] getScreenshot() {
-        return screenshot;
+        ACCESS_CONTROL_LIST.grantAllPermissions(GRANT);
     }
 }
