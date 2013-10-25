@@ -13,7 +13,10 @@ public class Screenshot {
     public static final String SCREENSHOT_EXTRA = "screenshot";
 
     public static byte[] snap(Activity activity){
-        return compressBitmap(getBitmapFromView(activity));
+        Bitmap screenshot = getBitmapFromView(activity);
+        byte[] bytes = compressBitmap(screenshot);
+        screenshot.recycle();
+        return bytes;
     }
 
     private static byte[] compressBitmap(Bitmap bitmap){
