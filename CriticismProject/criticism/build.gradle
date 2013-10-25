@@ -23,6 +23,6 @@ android {
 }
 
 dependencies {
-    compile files('libs/aws-android-sdk-1.6.1-s3.jar',
-                  'libs/aws-android-sdk-1.6.1-core.jar')
+    compile files('libs/aws-android-sdk-1.7.0-core.jar',
+                  'libs/aws-android-sdk-1.7.0-s3.jar')
 }
